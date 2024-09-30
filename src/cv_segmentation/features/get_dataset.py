@@ -20,7 +20,7 @@ class SegmentationDataset(Dataset):
             transform (callable, optional): Optional transform to be applied
                 on a sample.
         """
-        self.mask_frame = pd.read_csv(csv_file, index_col=0)
+        self.mask_frame = pd.read_csv(csv_file)
         self.root_dir = root_dir
         self.transform = transform
 

@@ -1,4 +1,5 @@
 import os
+import random
 
 import cv2
 import numpy as np
@@ -24,6 +25,11 @@ class SegmentationDataset(Dataset):
         self.root_dir = root_dir
         self.transform = transform
         self.clean_outliers()
+        self.train_val_test_ratio = [0.7, 0.2, 0.1]
+        self.train_idx = None
+        self.val_idx = None
+        self.test_idx = None
+        self.get_train_val_test_idx()
 
     def __len__(self):
         return len(self.mask_frame)
@@ -60,6 +66,23 @@ class SegmentationDataset(Dataset):
         image_arr_min = np.nan_to_num(image_arr).min(axis=1)
 
         self.mask_frame = self.mask_frame.iloc[image_arr_min > -0.25].reset_index()
+
+
+    def get_train_val_test_idx(self):
+        
+        n = self.mask_frame.shape[0]
+        n_train = int(self.train_val_test_ratio[0] * n)
+        n_test = int(self.train_val_test_ratio[2] * n)
+
+        dataset_idx = self.mask_frame.index.tolist()
+        train_idx = random.sample(dataset_idx, n_train)
+        val_idx = list(set(dataset_idx) - set(train_idx))
+        test_idx = random.sample(val_idx, n_test)
+        val_idx = list(set(val_idx) - set(test_idx))
+
+        self.train_idx = train_idx
+        self.val_idx = val_idx
+        self.test_idx = test_idx 
 
     def apply_dilation(self, mask):
         """

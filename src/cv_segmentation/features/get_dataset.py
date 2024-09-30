@@ -7,7 +7,6 @@ import pandas as pd
 import torch
 from scipy.ndimage import binary_fill_holes
 from torch.utils.data import Dataset
-from tqdm import tqdm
 
 
 class SegmentationDataset(Dataset):
@@ -24,12 +23,6 @@ class SegmentationDataset(Dataset):
         self.mask_frame = pd.read_csv(csv_file, index_col=0)
         self.root_dir = root_dir
         self.transform = transform
-        self.clean_outliers()
-        self.train_val_test_ratio = [0.7, 0.2, 0.1]
-        self.train_idx = None
-        self.val_idx = None
-        self.test_idx = None
-        self.get_train_val_test_idx()
 
     def __len__(self):
         return len(self.mask_frame)
@@ -54,34 +47,6 @@ class SegmentationDataset(Dataset):
             sample = self.transform(sample)
 
         return sample
-
-    def clean_outliers(self):
-        file_names = os.listdir(self.root_dir)
-        images_train = []
-        for img_name in tqdm(file_names):
-            img = np.load(os.path.join(self.root_dir, img_name))
-            images_train.append(img)
-
-        image_arr = np.reshape(np.asarray(images_train), (len(images_train), -1))
-        image_arr_min = np.nan_to_num(image_arr).min(axis=1)
-
-        self.mask_frame = self.mask_frame.iloc[image_arr_min > -0.25].reset_index()
-
-    def get_train_val_test_idx(self):
-
-        n = self.mask_frame.shape[0]
-        n_train = int(self.train_val_test_ratio[0] * n)
-        n_test = int(self.train_val_test_ratio[2] * n)
-
-        dataset_idx = self.mask_frame.index.tolist()
-        train_idx = random.sample(dataset_idx, n_train)
-        val_idx = list(set(dataset_idx) - set(train_idx))
-        test_idx = random.sample(val_idx, n_test)
-        val_idx = list(set(val_idx) - set(test_idx))
-
-        self.train_idx = train_idx
-        self.val_idx = val_idx
-        self.test_idx = test_idx
 
     def apply_dilation(self, mask):
         """

@@ -1,3 +1,5 @@
+TRESHOLD = -0.25
+
 CONFIG = {
     "save_dir": "../data/interim/",
     "train": [6, 7, 8, 9, 11, 12, 13, 14],

@@ -15,7 +15,7 @@ def split_y_to_train_val_test(
     y_train: pd.DataFrame,
     config: Optional[dict] = None,
 ) -> None:
-    if config in None:
+    if config is None:
         config = CONFIG
 
     y_train["well"] = y_train["index"].apply(lambda x: int(x.split("_")[1]))

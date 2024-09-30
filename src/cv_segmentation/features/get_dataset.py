@@ -67,9 +67,8 @@ class SegmentationDataset(Dataset):
 
         self.mask_frame = self.mask_frame.iloc[image_arr_min > -0.25].reset_index()
 
-
     def get_train_val_test_idx(self):
-        
+
         n = self.mask_frame.shape[0]
         n_train = int(self.train_val_test_ratio[0] * n)
         n_test = int(self.train_val_test_ratio[2] * n)
@@ -82,7 +81,7 @@ class SegmentationDataset(Dataset):
 
         self.train_idx = train_idx
         self.val_idx = val_idx
-        self.test_idx = test_idx 
+        self.test_idx = test_idx
 
     def apply_dilation(self, mask):
         """

@@ -20,7 +20,7 @@ class SegmentationDataset(Dataset):
             transform (callable, optional): Optional transform to be applied
                 on a sample.
         """
-        self.mask_frame = pd.read_csv(csv_file)
+        self.mask_frame = pd.read_csv(csv_file, index_col=0)
         self.root_dir = root_dir
         self.transform = transform
         self.clean_outliers()
@@ -59,7 +59,7 @@ class SegmentationDataset(Dataset):
         image_arr = np.reshape(np.asarray(images_train), (len(images_train), -1))
         image_arr_min = np.nan_to_num(image_arr).min(axis=1)
 
-        self.mask_frame = self.mask_frame.iloc[image_arr_min > -0.25]
+        self.mask_frame = self.mask_frame.iloc[image_arr_min > -0.25].reset_index()
 
     def apply_dilation(self, mask):
         """

@@ -53,7 +53,7 @@ class SegmentationDataset(Dataset):
         file_names = os.listdir(self.root_dir)
         images_train = []
         for img_name in tqdm(file_names):
-            img = np.load(os.path.join(root_dir, img_name))
+            img = np.load(os.path.join(self.root_dir, img_name))
             images_train.append(img)
 
         image_arr = np.reshape(np.asarray(images_train), (len(images_train), -1))

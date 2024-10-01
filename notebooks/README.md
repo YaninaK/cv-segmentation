@@ -131,4 +131,4 @@ transform = apply_numpy_transform
 
   Важно проследить, чтобы маска обучающей выборки трансформировалась также как изображение.
 
-6. Пример реализации SegmentationDataset и иллюстрация работы DataLoader - в коде этого ноутбука 02_Datasets,_dataloaders_transforms.ipynb.
+6. Пример реализации SegmentationDataset и иллюстрация работы DataLoader в рамках data_preparation_pipeline - в коде этого ноутбука 02_Datasets,_dataloaders_transforms.ipynb.

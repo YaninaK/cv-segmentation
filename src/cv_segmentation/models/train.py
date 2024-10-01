@@ -7,6 +7,7 @@ sys.path.append(os.path.join(os.getcwd(), "src", "cv_segmentation"))
 import logging
 from typing import Optional, Tuple
 
+import torch
 from data.make_dataset import clean_outliers, load_data
 from data.validation import split_y_to_train_val_test
 from features.get_dataset import SegmentationDataset

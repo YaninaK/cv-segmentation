@@ -7,6 +7,7 @@ sys.path.append(os.path.join(os.getcwd(), "src", "cv_segmentation"))
 import logging
 from typing import Optional, Tuple
 
+import numpy as np
 import torch
 from data.make_dataset import clean_outliers, load_data
 from data.validation import split_y_to_train_val_test
@@ -43,7 +44,10 @@ def data_preparation_pipeline(
     }
     dataset_loader = {
         stage: torch.utils.data.DataLoader(
-            segmentation_datasets[stage], batch_size=4, shuffle=True, num_workers=4
+            segmentation_datasets[stage],
+            batch_size=4,
+            shuffle=np.where(stage == "train", True, False),
+            num_workers=4,
         )
         for stage in stages
     }

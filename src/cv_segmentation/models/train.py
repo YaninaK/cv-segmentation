@@ -12,7 +12,6 @@ from data.make_dataset import clean_outliers, load_data
 from data.validation import split_y_to_train_val_test
 from features.get_dataset import SegmentationDataset
 from features.transform import data_transform
-from torch.utils.data import DataLoader, Dataset
 
 from data import CONFIG
 
@@ -43,7 +42,7 @@ def data_preparation_pipeline(
         for stage in stages
     }
     dataset_loader = {
-        stage: DataLoader(
+        stage: torch.utils.data.DataLoader(
             segmentation_datasets[stage], batch_size=4, shuffle=True, num_workers=4
         )
         for stage in stages

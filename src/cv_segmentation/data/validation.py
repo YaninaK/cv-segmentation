@@ -20,12 +20,7 @@ def split_y_to_train_val_test(
 
     y_train["well"] = y_train["index"].apply(lambda x: int(x.split("_")[1]))
 
-    y_train.loc[y_train["well"].isin(config["train"]), y_train.columns[:-1]].to_csv(
-        os.path.join(config["save_dir"], "y_train.csv"), index=False
-    )
-    y_train.loc[y_train["well"].isin(config["val"]), y_train.columns[:-1]].to_csv(
-        os.path.join(config["save_dir"], "y_val.csv"), index=False
-    )
-    y_train.loc[y_train["well"].isin(config["test"]), y_train.columns[:-1]].to_csv(
-        os.path.join(config["save_dir"], "y_test.csv"), index=False
-    )
+    for stage in ["train", "val", "test"]:
+        y_train.loc[y_train["well"].isin(config[stage]), y_train.columns[:-1]].to_csv(
+            os.path.join(config["save_dir"], f"y_{stage}.csv"), index=False
+        )

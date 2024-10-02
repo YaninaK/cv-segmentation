@@ -15,6 +15,7 @@ class PreprocessData:
         self.config = config
         self.to_delete = None
         self.fill_nan_list = None
+        self.fix_outliers_list = None
 
     def fit_transform(
         self, y_train: pd.DataFrame, images_train: list[np.array]
@@ -55,6 +56,10 @@ class PreprocessData:
         self.to_delete += n_outliers[
             n_outliers >= self.config["n_outlier_threshold"]
         ].index.tolist()
+        self.fix_outliers_list = n_outliers[
+            (n_outliers > 0) & (n_outliers < self.config["n_outlier_threshold"])
+        ].index.tolist()
+
         image_frame.mask(
             image_frame < self.config["outlier_threshold"],
             image_frame.median(axis=1),

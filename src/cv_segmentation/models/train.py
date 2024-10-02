@@ -9,7 +9,8 @@ from typing import Optional, Tuple
 
 import numpy as np
 import torch
-from data.make_dataset import clean_outliers, load_data
+from data.make_dataset import load_data
+from data.preprocess import PreprocessData
 from data.validation import split_y_to_train_val_test
 from features.get_dataset import SegmentationDataset
 from features.transform import data_transform
@@ -28,7 +29,8 @@ def data_preparation_pipeline(
         config = CONFIG
 
     y_train, images_train = load_data(config)
-    y_train, _ = clean_outliers(y_train, images_train)
+    preprocess = PreprocessData()
+    y_train, _ = preprocess(y_train, images_train)
     split_y_to_train_val_test(y_train)
 
     stages = ["train", "val", "test"]

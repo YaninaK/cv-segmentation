@@ -1,15 +1,15 @@
 # Рекоммендации по коду ноутбука challenge notebook.ipynb
 
-## Содержание
+### Содержание
 
-1. [Блок Look at the data (EDA)](EDA)
-2. [Блоки Preparing The Dataset, Dataset Class и Start Training](preprocessing)
-3. [Блоки UNET Model, Attention U-Net, ResUNet, Various Losses for Training, Evalution Score](models)
-
-
+1. [Блок Look at the data (EDA)](https://github.com/YaninaK/cv-segmentation/tree/b1/notebooks#1-%D0%B1%D0%BB%D0%BE%D0%BA-look-at-the-data-eda)
+2. [Блоки Preparing The Dataset, Dataset Class и Start Training](https://github.com/YaninaK/cv-segmentation/tree/b1/notebooks#2-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8-preparing-the-dataset-dataset-class-%D0%B8-start-training)
+3. [Блоки UNET Model, Attention U-Net, ResUNet, Various Losses for Training, Evalution Score](https://github.com/YaninaK/cv-segmentation/tree/b1/notebooks#3-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8-unet-model-attention-u-net-resunet-various-losses-for-training-evalution-score)
 
 
-## 1. Блок Look at the data (EDA)<a name="EDA"></a> 
+
+
+## 1. Блок Look at the data (EDA)
 
 Рекомендации реализованы в коде ноутбука 01_EDA.ipynb.
 
@@ -129,7 +129,7 @@ test = [2, 4, 5, 15]
 19. Для удобства чтения хорошо использовать подзаголовки, чтобы была видна структура материла. Этого легко добиться, используя разное число знаков ```#```, например: ```#```, ```##``` или ```###```, в зависимости от уровня подзаголовка.
  
 
-## 2. Блоки Preparing The Dataset, Dataset Class и Start Training<a name="preprocessing"></a>
+## 2. Блоки Preparing The Dataset, Dataset Class и Start Training.
 
 Рекомендации реализованы в коде ноутбука 02_Datasets,_dataloaders_transforms.ipynb.
 
@@ -177,7 +177,7 @@ transform = apply_numpy_transform
 
 6. Пример реализации ```PreprocessData```, ```SegmentationDataset``` и иллюстрация работы ```DataLoader``` в рамках ```data_preparation_pipeline``` - в коде этого ноутбука 02_Datasets,_dataloaders_transforms.ipynb.
 
-## 3. Блоки UNET Model, Attention U-Net, ResUNet, Various Losses for Training, Evalution Score.<a name="models"></a>
+## 3. Блоки UNET Model, Attention U-Net, ResUNet, Various Losses for Training, Evalution Score.
 Рекомендации реализованы в коде ноутбука 03_Models_losses_&_evalution score.ipynb.
 
 1. Все три модели ```UNET Model```, ```Attention U-Net``` и ```ResUNet``` могут быть задействованы в сегментации изображений, но в базовом варианте задействована только ```UNET Model```, поэтому остальные модели лучше показывать в отдельном ноутбуке в качестве заметок для дальнейшей работы.

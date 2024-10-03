@@ -2,18 +2,18 @@
 
 ### Содержание
 
-1. [Блок Look at the data (EDA)](https://github.com/YaninaK/cv-segmentation/tree/b1/notebooks#1-%D0%B1%D0%BB%D0%BE%D0%BA-look-at-the-data-eda)
+1. [Блок Look at the data (EDA), Label Refinement, Image Enhancement](https://github.com/YaninaK/cv-segmentation/tree/b1/notebooks#1-%D0%B1%D0%BB%D0%BE%D0%BA-look-at-the-data-eda)
 2. [Блоки Preparing The Dataset, Dataset Class и Start Training](https://github.com/YaninaK/cv-segmentation/tree/b1/notebooks#2-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8-preparing-the-dataset-dataset-class-%D0%B8-start-training)
 3. [Блоки UNET Model, Attention U-Net, ResUNet, Various Losses for Training, Evalution Score](https://github.com/YaninaK/cv-segmentation/tree/b1/notebooks#3-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8-unet-model-attention-u-net-resunet-various-losses-for-training-evalution-score)
 
 
 
 
-## 1. Блок Look at the data (EDA)
+## 1. Блок Look at the data (EDA), Label Refinement, Image Enhancement
 
 Рекомендации реализованы в коде ноутбука 01_EDA.ipynb.
 
-1. Блок Look at the data (EDA) лучше делать в отдельном ноутбуке и давать на него ссылку. 
+1. Блок Look at the data (EDA), Label Refinement & Image Enhancement лучше делать в отдельном ноутбуке и давать на него ссылку. 
 2. Для воспроизводимости среды необходимые версии библиотек лучше зафиксировать, например, в файле requirements.txt:
 
 ```
@@ -141,6 +141,8 @@ y_train, images_train = load_data()
 preprocess = PreprocessData()
 y_train, _  = preprocess.fit_transform(y_train, images_train)
 ```
+  Код ```PreprocessData``` можно посмотреть [здесь](https://github.com/YaninaK/cv-segmentation/blob/main/src/cv_segmentation/data/preprocess.py).
+
   Выбор модели/ ансамбля моделей для обнаружения аномалий, настройка гиперпараметров - отдельный блок задач, встроенный в процесс построения ```data preprocessing pipeline```.
 
   Порог, после которого начиаются выбросы, другие гиперпараметры определяются, начиная с этапа EDA.
@@ -152,6 +154,8 @@ y_train, _  = preprocess.fit_transform(y_train, images_train)
 ```
 split_y_to_train_val_test(y_train)
 ```
+Код ```split_y_to_train_val_test``` можно посмотреть [здесь](https://github.com/YaninaK/cv-segmentation/blob/main/src/cv_segmentation/data/validation.py).
+
 4. Трансформацию данных лучше делать отдельно от датасета и присоединять при его инициализации. Вместо 
 ```
 transform = False
@@ -162,6 +166,8 @@ transform = apply_numpy_transform
 ```
 Подходы к трансформации данных в обучающей и валидационной/ тестовой выборках отличаются:
   * В валидационной/ тестовой выборке зачастую достаточно трансформировать данные в torch.Tensor
+
+Код внешнего модуля трансформации данных можно посмотреть [здесь](https://github.com/YaninaK/cv-segmentation/blob/main/src/cv_segmentation/features/transform.py). Код ```SegmentationDataset``` можно посмотреть [здесь](https://github.com/YaninaK/cv-segmentation/blob/main/src/cv_segmentation/features/get_dataset.py).
 
 5. Идеи для аугментации данных можно почерпнуть в библитеке torchvision.transforms.v2
 
@@ -176,6 +182,8 @@ transform = apply_numpy_transform
   Важно проследить, чтобы маска обучающей выборки трансформировалась также как изображение.
 
 6. Пример реализации ```PreprocessData```, ```SegmentationDataset``` и иллюстрация работы ```DataLoader``` в рамках ```data_preparation_pipeline``` - в коде этого ноутбука 02_Datasets,_dataloaders_transforms.ipynb.
+
+  Код ```data_preparation_pipeline``` можно посмотреть [здесь](https://github.com/YaninaK/cv-segmentation/blob/main/src/cv_segmentation/models/train.py).
 
 ## 3. Блоки UNET Model, Attention U-Net, ResUNet, Various Losses for Training, Evalution Score.
 Рекомендации реализованы в коде ноутбука 03_Models_losses_&_evalution score.ipynb.

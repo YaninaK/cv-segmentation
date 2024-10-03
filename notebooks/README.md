@@ -132,9 +132,9 @@ y_train, images_train = load_data()
 preprocess = PreprocessData()
 y_train, _  = preprocess.fit_transform(y_train, images_train)
 ```
-Выбор модели/ ансамбля моделей для обнаружения аномалий, настройка гиперпараметров - отдельный блок задач, встроенный в процесс построения ```data preprocessing pipeline```.
+  Выбор модели/ ансамбля моделей для обнаружения аномалий, настройка гиперпараметров - отдельный блок задач, встроенный в процесс построения ```data preprocessing pipeline```.
 
-Порог, после которого начиаются выбросы, другие гиперпараметры определяются, начиная с этапа EDA.
+  Порог, после которого начиаются выбросы, другие гиперпараметры определяются, начиная с этапа EDA.
 
 2. Лучше отказаться от дублирования данных обучающей выборки в папке ```data/interim/```. Достаточно разбить y_train на 3 файла: ```y_train.csv```, ```y_val.csv``` и ```y_test.csv```  и поместить их в папку ```data/interim/```.
 Тестовая выборка, в дополнение к валидационной, потребуется для анализа ошибок моделей.
@@ -166,4 +166,4 @@ transform = apply_numpy_transform
 
   Важно проследить, чтобы маска обучающей выборки трансформировалась также как изображение.
 
-6. Пример реализации SegmentationDataset и иллюстрация работы DataLoader в рамках data_preparation_pipeline - в коде этого ноутбука 02_Datasets,_dataloaders_transforms.ipynb.
+6. Пример реализации ```PreprocessData```, ```SegmentationDataset``` и иллюстрация работы ```DataLoader``` в рамках ```data_preparation_pipeline``` - в коде этого ноутбука 02_Datasets,_dataloaders_transforms.ipynb.

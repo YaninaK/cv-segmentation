@@ -180,3 +180,12 @@ transform = apply_numpy_transform
 
 3. Dice Score (```dice_coeff```) рассчитывается некорректно. Корректный вариант расчета для numpy - в коде ноутбука.
 * Dice в pytorch доступен "из коробки" - [здесь](https://torchmetrics.readthedocs.io/en/v0.10.0/classification/dice.html) ссылка. Лучше использовать этот вариант.
+
+4. В дальнейшем можно поэксперементировать с перспективными архитектурами моделей:
+    * UNet++: A Nested U-Net Architecture for Medical Image Segmentation Zongwei Zhou et al., [Jul 2018](https://arxiv.org/abs/1807.10165)
+    * AG-CUResNeSt: A Novel Method for Colon Polyp Segmentation. Sang et al. [Mar 2022](https://arxiv.org/abs/2105.00402)
+    * Mask R-CNN. Kaiming He et al. [Jan 2018](https://arxiv.org/abs/1703.06870)
+    * Vision Transformer (ViT) An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale Alexey Dosovitskiy et al.[Jun 2021](https://arxiv.org/abs/2010.11929)
+    * DeiT (data-efficient image transformers)
+    * VGG16-U-Net
+  

@@ -2,18 +2,18 @@
 
 ### Содержание
 
-1. [Блок Look at the data (EDA)](https://github.com/YaninaK/cv-segmentation/tree/b1/notebooks#1-%D0%B1%D0%BB%D0%BE%D0%BA-look-at-the-data-eda)
+1. [Блок Look at the data (EDA), Label Refinement, Image Enhancement](https://github.com/YaninaK/cv-segmentation/tree/b1/notebooks#1-%D0%B1%D0%BB%D0%BE%D0%BA-look-at-the-data-eda)
 2. [Блоки Preparing The Dataset, Dataset Class и Start Training](https://github.com/YaninaK/cv-segmentation/tree/b1/notebooks#2-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8-preparing-the-dataset-dataset-class-%D0%B8-start-training)
 3. [Блоки UNET Model, Attention U-Net, ResUNet, Various Losses for Training, Evalution Score](https://github.com/YaninaK/cv-segmentation/tree/b1/notebooks#3-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8-unet-model-attention-u-net-resunet-various-losses-for-training-evalution-score)
 
 
 
 
-## 1. Блок Look at the data (EDA)
+## 1. Блок Look at the data (EDA), Label Refinement, Image Enhancement
 
 Рекомендации реализованы в коде ноутбука 01_EDA.ipynb.
 
-1. Блок Look at the data (EDA) лучше делать в отдельном ноутбуке и давать на него ссылку. 
+1. Блок Look at the data (EDA), Label Refinement & Image Enhancement лучше делать в отдельном ноутбуке и давать на него ссылку. 
 2. Для воспроизводимости среды необходимые версии библиотек лучше зафиксировать, например, в файле requirements.txt:
 
 ```

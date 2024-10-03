@@ -30,7 +30,7 @@ def data_preparation_pipeline(
 
     y_train, images_train = load_data(config)
     preprocess = PreprocessData()
-    y_train, _ = preprocess(y_train, images_train)
+    y_train, _ = preprocess.fit_transform(y_train, images_train)
     split_y_to_train_val_test(y_train)
 
     stages = ["train", "val", "test"]

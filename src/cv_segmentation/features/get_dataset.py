@@ -8,11 +8,9 @@ import logging
 import random
 from typing import Optional, Tuple
 
-import cv2
 import numpy as np
 import pandas as pd
 import torch
-from scipy.ndimage import binary_fill_holes
 from torch.utils.data import Dataset
 
 from data import CONFIG
@@ -61,14 +59,9 @@ class SegmentationDataset(Dataset):
         image = np.where(
             image < self.config["outlier_threshold"], np.quantile(image, 0.5), image
         )
-
         image = torch.from_numpy(image)
         mask = self.mask_frame.iloc[idx, 1:]
         mask = torch.from_numpy(np.array(mask, dtype=float).reshape(36, 36))
-
-        # Label refinement
-        mask = binary_fill_holes(mask)
-        mask = self.apply_dilation(mask)
 
         sample = {"image": image, "mask": mask}
 
@@ -76,16 +69,3 @@ class SegmentationDataset(Dataset):
             sample = self.transform(sample)
 
         return sample
-
-    def apply_dilation(self, mask):
-        """
-        Structuring Element & Morphological Operations
-        """
-        kernel_size = (2, 2)
-        kernel_shape = cv2.MORPH_RECT
-        # Create the adaptive structuring element
-        adaptive_kernel = cv2.getStructuringElement(kernel_shape, kernel_size)
-        # Apply morphological operations : dilation
-        mask = cv2.dilate(np.ones((36, 36)) * mask, adaptive_kernel)
-
-        return mask

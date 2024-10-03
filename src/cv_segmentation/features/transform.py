@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def data_transform(sample: dict):
+def data_transform(sample: dict) -> dict:
     """
     Apply horizontal and vertical flips with 50% probability
     """

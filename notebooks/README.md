@@ -1,6 +1,15 @@
 # Рекоммендации по коду ноутбука challenge notebook.ipynb
 
-## 1. Блок Look at the data (EDA)
+## Содержание
+
+1. [Блок Look at the data (EDA)](EDA)
+2. [Блоки Preparing The Dataset, Dataset Class и Start Training](preprocessing)
+3. [Блоки UNET Model, Attention U-Net, ResUNet, Various Losses for Training, Evalution Score](models)
+
+
+
+
+## 1. Блок Look at the data (EDA)<a name="EDA"></a> 
 
 Рекомендации реализованы в коде ноутбука 01_EDA.ipynb.
 
@@ -120,7 +129,7 @@ test = [2, 4, 5, 15]
 19. Для удобства чтения хорошо использовать подзаголовки, чтобы была видна структура материла. Этого легко добиться, используя разное число знаков ```#```, например: ```#```, ```##``` или ```###```, в зависимости от уровня подзаголовка.
  
 
-## 2. Блоки Preparing The Dataset, Dataset Class и Start Training
+## 2. Блоки Preparing The Dataset, Dataset Class и Start Training<a name="preprocessing"></a>
 
 Рекомендации реализованы в коде ноутбука 02_Datasets,_dataloaders_transforms.ipynb.
 
@@ -168,18 +177,20 @@ transform = apply_numpy_transform
 
 6. Пример реализации ```PreprocessData```, ```SegmentationDataset``` и иллюстрация работы ```DataLoader``` в рамках ```data_preparation_pipeline``` - в коде этого ноутбука 02_Datasets,_dataloaders_transforms.ipynb.
 
-## 3. Блоки UNET Model, Attention U-Net, ResUNet, Various Losses for Training, Evalution Score.
+## 3. Блоки UNET Model, Attention U-Net, ResUNet, Various Losses for Training, Evalution Score.<a name="models"></a>
 Рекомендации реализованы в коде ноутбука 03_Models_losses_&_evalution score.ipynb.
 
 1. Все три модели ```UNET Model```, ```Attention U-Net``` и ```ResUNet``` могут быть задействованы в сегментации изображений, но в базовом варианте задействована только ```UNET Model```, поэтому остальные модели лучше показывать в отдельном ноутбуке в качестве заметок для дальнейшей работы.
-* Если эксперименты проводились на всех трех моделях, модели лучше вывести в отдельные модули, которые бы импортировались в ноутбук, а в ноутбуке провести сравнительный анализ результатов экспериментов.
+
+  Если эксперименты проводились на всех трех моделях, модели лучше вывести в отдельные модули, которые бы импортировались в ноутбук, а в ноутбуке провести сравнительный анализ результатов экспериментов.
 
 2. В базовом варианте модели функция потерь ```Binary Cross Entropy``` - ```torch.nn.BCELoss``` "из коробки".
 
-* Если эксперименты проводились c ```Dice Loss + BCE``` и ```Focal Loss```, эти функции потерь лучше вывести в отдельные модули, которые бы импортировались в ноутбук, а в ноутбуке провести сравнительный анализ результатов экспериментов.
+  Если эксперименты проводились c ```Dice Loss + BCE``` и ```Focal Loss```, эти функции потерь лучше вывести в отдельные модули, которые бы импортировались в ноутбук, а в ноутбуке провести сравнительный анализ результатов экспериментов.
 
 3. Dice Score (```dice_coeff```) рассчитывается некорректно. Корректный вариант расчета для numpy - в коде ноутбука.
-* Dice в pytorch доступен "из коробки" - [здесь](https://torchmetrics.readthedocs.io/en/v0.10.0/classification/dice.html) ссылка. Лучше использовать этот вариант.
+
+  Dice в pytorch доступен "из коробки" - [здесь](https://torchmetrics.readthedocs.io/en/v0.10.0/classification/dice.html) ссылка. Лучше использовать этот вариант.
 
 4. В дальнейшем можно поэксперементировать с перспективными архитектурами моделей:
     * UNet++: A Nested U-Net Architecture for Medical Image Segmentation Zongwei Zhou et al., [Jul 2018](https://arxiv.org/abs/1807.10165)

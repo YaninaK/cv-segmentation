@@ -129,6 +129,7 @@ test = [2, 4, 5, 15]
 19. Для удобства чтения хорошо использовать подзаголовки, чтобы была видна структура материла. Этого легко добиться, используя разное число знаков ```#```, например: ```#```, ```##``` или ```###```, в зависимости от уровня подзаголовка.
  
 
+
 ## 2. Блоки Preparing The Dataset, Dataset Class и Start Training.
 
 Рекомендации реализованы в коде ноутбука 02_Datasets,_dataloaders_transforms.ipynb.
@@ -184,6 +185,8 @@ transform = apply_numpy_transform
 6. Пример реализации ```PreprocessData```, ```SegmentationDataset``` и иллюстрация работы ```DataLoader``` в рамках ```data_preparation_pipeline``` - в коде этого ноутбука 02_Datasets,_dataloaders_transforms.ipynb.
 
   Код ```data_preparation_pipeline``` можно посмотреть [здесь](https://github.com/YaninaK/cv-segmentation/blob/main/src/cv_segmentation/models/train.py).
+
+
 
 ## 3. Блоки UNET Model, Attention U-Net, ResUNet, Various Losses for Training, Evalution Score.
 Рекомендации реализованы в коде ноутбука 03_Models_losses_&_evalution score.ipynb.

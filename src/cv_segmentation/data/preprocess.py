@@ -1,3 +1,4 @@
+import logging
 from typing import Optional, Tuple
 
 import numpy as np
@@ -5,6 +6,10 @@ import pandas as pd
 from pca import pca
 
 from . import CONFIG
+
+logger = logging.getLogger(__name__)
+
+__all__ = ["preprocess_data"]
 
 
 class PreprocessData:
@@ -14,8 +19,6 @@ class PreprocessData:
 
         self.config = config
         self.to_delete = None
-        self.fill_nan_list = None
-        self.fix_outliers_list = None
 
     def fit_transform(
         self, y_train: pd.DataFrame, images_train: list[np.array]
@@ -45,7 +48,6 @@ class PreprocessData:
         fill_nan_condition = (n_missing > 0) & (
             n_missing < self.config["fill_nan_threshold"]
         )
-        self.fill_nan_list = image_frame[fill_nan_condition].index.tolist()
         image_frame.mask(
             fill_nan_condition, image_frame.median(axis=1), axis=0, inplace=True
         )
@@ -55,9 +57,6 @@ class PreprocessData:
         n_outliers = (image_frame < self.config["outlier_threshold"]).sum(axis=1)
         self.to_delete += n_outliers[
             n_outliers >= self.config["n_outlier_threshold"]
-        ].index.tolist()
-        self.fix_outliers_list = n_outliers[
-            (n_outliers > 0) & (n_outliers < self.config["n_outlier_threshold"])
         ].index.tolist()
 
         image_frame.mask(

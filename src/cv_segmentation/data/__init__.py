@@ -17,6 +17,6 @@ CONFIG = {
     "num_workers": {
         "train": 4,
         "val": 4,
-        "test:": 4,
+        "test": 4,
     },
 }

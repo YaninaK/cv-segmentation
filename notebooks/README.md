@@ -1,11 +1,11 @@
-# Рекоммендации по коду ноутбука challenge notebook.ipynb
+# Рекоммендации к коду ноутбука challenge notebook.ipynb
 
 ### Содержание
 
 1. [Блок Look at the data (EDA), Label Refinement, Image Enhancement](https://github.com/YaninaK/cv-segmentation/tree/b1/notebooks#1-%D0%B1%D0%BB%D0%BE%D0%BA-look-at-the-data-eda)
 2. [Блоки Preparing The Dataset, Dataset Class и Start Training](https://github.com/YaninaK/cv-segmentation/tree/b1/notebooks#2-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8-preparing-the-dataset-dataset-class-%D0%B8-start-training)
 3. [Блоки UNET Model, Attention U-Net, ResUNet, Various Losses for Training, Evalution Score](https://github.com/YaninaK/cv-segmentation/tree/b1/notebooks#3-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8-unet-model-attention-u-net-resunet-various-losses-for-training-evalution-score)
-
+4. [Сквозной пример реализации рекомендаций к коду ноутбука challenge notebook.ipynb]()
 
 
 
@@ -247,3 +247,14 @@ if avg_vloss < best_vloss:
     torch.save(model.state_dict(), model_path)
 ```
 10. Все рекомендации реалиизованы в сквозном примере в ноутбуке 04_Baseline_model.ipynb.
+
+
+
+## 4. Сквозной пример реализации рекомендаций к коду ноутбука challenge notebook.ipynb
+
+В ноутбуке 04_Baseline_model.ipynb реализован на сквозном примере обучения модели реализованы основные рекомендации к коду ноутбука challenge notebook.ipynb.
+
+1. Далее необходимо обучить модель при различных гиперпараметрах и выбрать лучшие по валидационной выборке.
+2. После настройки гиперпараметров следует протестировать модель на тестовой выборке и изучить, на каких экземплярах модель ошибается. Это может дать представление, как нужно трансформировать данные или изменить архитектуру модели, чтобы улучшить метрики.
+3. Еще одно направление для исследований - проанализироать насколько качественная разметка. От разметки зависит и качесвтво обучения, и метрики на тестовой выборке. Если в разметке обнаружатся какие-то системные ошибки, которые можно нивелироать, есть шанс, что метрики модели улучшатся. Другой вариант - делать поправку на качество разметки - помечать в данных способы разметки/ разметчиков, как дополнительный признак.
+4. Формулы, задейстованные в подготовке данных, обучении модели, инфененсе должны быть покрыты тестами. Так будет удобнее поддерживать модель на протяжении ее жизненного цикла. Обычно для этих целей используют библиотеки ```pytest``` - [здесь](https://docs.pytest.org/en/stable/) ссылка , ```unittest.mock``` - [здесь](https://docs.python.org/3/library/unittest.mock.html) ссылка. 

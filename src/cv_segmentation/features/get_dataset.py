@@ -65,6 +65,6 @@ class SegmentationDataset(Dataset):
             image, mask = self.transform(image, mask)
 
         image = torch.from_numpy(image.copy())
-        mask = torch.from_numpy(mask.copy())
+        mask = torch.from_numpy(mask.copy()).float()
 
         return image, mask, img_name

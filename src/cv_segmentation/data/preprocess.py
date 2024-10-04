@@ -23,14 +23,16 @@ class PreprocessData:
     def fit_transform(
         self, y_train: pd.DataFrame, images_train: list[np.array]
     ) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        self.selected_idx = y_train.index.tolist()
 
         image_frame = self._fill_nan(y_train, images_train)
         image_frame = self._clean_univariate_outliers(image_frame)
+
         if self.to_delete:
-            selected_idx = [i for i in y_train.index if i not in self.to_delete]
-        else:
-            selected_idx = y_train.index.tolist()
-        self._clean_multivariate_outliers(image_frame.loc[selected_idx])
+            self.selected_idx = [
+                i for i in self.selected_idx if i not in self.to_delete
+            ]
+        self._clean_multivariate_outliers(image_frame.loc[self.selected_idx])
 
         return y_train.loc[self.selected_idx], image_frame.loc[self.selected_idx]
 

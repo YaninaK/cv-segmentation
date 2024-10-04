@@ -9,12 +9,10 @@ logger = logging.getLogger(__name__)
 __all__ = ["transform_data"]
 
 
-def data_transform(sample: dict) -> dict:
+def data_transform(image: np.array, mask: np.array) -> np.array:
     """
     Apply horizontal and vertical flips with 50% probability
     """
-    image = sample["image"]
-    mask = sample["mask"]
 
     if np.random.random() > 0.5:
         image = np.fliplr(image)  # Horizontal flip
@@ -28,9 +26,7 @@ def data_transform(sample: dict) -> dict:
     mask = binary_fill_holes(mask)
     mask = apply_dilation(mask)
 
-    sample = {"image": image, "mask": mask}
-
-    return sample
+    return image, mask
 
 
 def apply_dilation(mask: np.array) -> np.array:

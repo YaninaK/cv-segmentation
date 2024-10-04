@@ -9,4 +9,14 @@ CONFIG = {
     "train": [1, 6, 7, 8, 10, 11, 12, 13, 14],
     "val": [3, 9],
     "test": [2, 4, 5, 15],
+    "batch_size": {
+        "train": 16,
+        "val": 16,
+        "test": 4,
+    },
+    "num_workers": {
+        "train": 4,
+        "val": 4,
+        "test": 4,
+    },
 }

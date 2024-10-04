@@ -1,11 +1,11 @@
-# Рекоммендации по коду ноутбука challenge notebook.ipynb
+# Рекоммендации к коду ноутбука challenge notebook.ipynb
 
 ### Содержание
 
 1. [Блок Look at the data (EDA), Label Refinement, Image Enhancement](https://github.com/YaninaK/cv-segmentation/tree/b1/notebooks#1-%D0%B1%D0%BB%D0%BE%D0%BA-look-at-the-data-eda)
 2. [Блоки Preparing The Dataset, Dataset Class и Start Training](https://github.com/YaninaK/cv-segmentation/tree/b1/notebooks#2-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8-preparing-the-dataset-dataset-class-%D0%B8-start-training)
 3. [Блоки UNET Model, Attention U-Net, ResUNet, Various Losses for Training, Evalution Score](https://github.com/YaninaK/cv-segmentation/tree/b1/notebooks#3-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8-unet-model-attention-u-net-resunet-various-losses-for-training-evalution-score)
-
+4. [Сквозной пример реализации рекомендаций к коду ноутбука challenge notebook.ipynb]()
 
 
 
@@ -129,6 +129,7 @@ test = [2, 4, 5, 15]
 19. Для удобства чтения хорошо использовать подзаголовки, чтобы была видна структура материла. Этого легко добиться, используя разное число знаков ```#```, например: ```#```, ```##``` или ```###```, в зависимости от уровня подзаголовка.
  
 
+
 ## 2. Блоки Preparing The Dataset, Dataset Class и Start Training.
 
 Рекомендации реализованы в коде ноутбука 02_Datasets,_dataloaders_transforms.ipynb.
@@ -185,8 +186,10 @@ transform = apply_numpy_transform
 
   Код ```data_preparation_pipeline``` можно посмотреть [здесь](https://github.com/YaninaK/cv-segmentation/blob/main/src/cv_segmentation/models/train.py).
 
-## 3. Блоки UNET Model, Attention U-Net, ResUNet, Various Losses for Training, Evalution Score.
-Рекомендации реализованы в коде ноутбука 03_Models_losses_&_evalution score.ipynb.
+
+
+## 3. Блоки UNET Model, Attention U-Net, ResUNet, Various Losses for Training, Evalution Score, Training
+Рекомендации из ноутбука 03_Models_losses_&_evalution score.ipynb.
 
 1. Все три модели ```UNET Model```, ```Attention U-Net``` и ```ResUNet``` могут быть задействованы в сегментации изображений, но в базовом варианте задействована только ```UNET Model```, поэтому остальные модели лучше показывать в отдельном ноутбуке в качестве заметок для дальнейшей работы.
 
@@ -196,15 +199,62 @@ transform = apply_numpy_transform
 
   * Если эксперименты проводились c ```Dice Loss + BCE``` и ```Focal Loss```, эти функции потерь лучше вывести в отдельные модули, которые бы импортировались в ноутбук, а в ноутбуке провести сравнительный анализ результатов экспериментов.
 
-3. Dice Score (```dice_coeff```) рассчитывается некорректно. Корректный вариант расчета для numpy - в коде ноутбука.
-
-  * Dice в pytorch доступен "из коробки" - [здесь](https://torchmetrics.readthedocs.io/en/v0.10.0/classification/dice.html) ссылка. Лучше использовать этот вариант.
-
-4. В дальнейшем можно поэксперементировать с перспективными архитектурами моделей:
+3. В дальнейшем можно поэксперементировать с перспективными архитектурами моделей:
     * UNet++: A Nested U-Net Architecture for Medical Image Segmentation Zongwei Zhou et al., [Jul 2018](https://arxiv.org/abs/1807.10165)
     * AG-CUResNeSt: A Novel Method for Colon Polyp Segmentation. Sang et al. [Mar 2022](https://arxiv.org/abs/2105.00402)
     * Mask R-CNN. Kaiming He et al. [Jan 2018](https://arxiv.org/abs/1703.06870)
     * Vision Transformer (ViT) An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale Alexey Dosovitskiy et al.[Jun 2021](https://arxiv.org/abs/2010.11929)
     * DeiT (data-efficient image transformers)
     * VGG16-U-Net
+
+4. Dice Score (```dice_coeff```) рассчитывается некорректно. Корректный вариант расчета выше в этом ноутбуке. Формула работает для тензоров pytorch.
+
+5. Из-за того что функция ```dice_coeff``` на входе и выходе не работает с ```torch.tensor```, ```y_pred``` и ```y_true``` приходится переводить в ```numpy``` и переходить на ```cpu```, что замедляет скорость обучения модели. Формула ```dice``` (выше), работающая с ```torch.tensor```, позволит этого избежать.
+
+6. Если исходить из логики, что основная задача - обучение модели, а валидация - вспомогательная, вместо отдельной формулы для валидации модели, я бы предложила сделать отдельную формулу для одной эпохи обучения (```training Loop```) и использовать этот законченный блок при запуске каждой эпохи. 
   
+7. Инициализацию модели лучше сделать в отдельной ячейке, чтобы можно было легко добавлять больше эпох к текущему запуску.
+
+8. Для логирования метрик и значений функции потерь при обучении модели и валидации, чтобы потом выводить результаты на ```TensorBoard```, в pytorch предлагается ```torch.utils.tensorboard.SummaryWriter```.
+  TensorBoard: набор инструментов для визуализации TensorFlow - [здесь](https://www.tensorflow.org/tensorboard?hl=ru) ссылка.
+
+  Код запускается при инициализации модели:
+```
+timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+writer = SummaryWriter('runs/corrosion_segmentation_trainer_{}'.format(timestamp))
+```
+  В конце каждой эпохи логируем показатели обучения и валидации модели:
+```
+writer.add_scalars(
+  'Training vs. Validation Loss',
+  { 'Training' : avg_loss, 'Validation' : avg_vloss },
+  epoch_number + 1
+)
+writer.flush()
+```
+  Пример кода для запуска ```TensorBoard``` в ```Google Colab```:
+```
+%load_ext tensorboard
+%tensorboard --logdir='/content/cv-segmentation/notebooks/runs'
+```
+
+9. Имеет смысл отслеживать и записывать лучшие версии модели:
+```
+best_vloss = 1_000_000.
+if avg_vloss < best_vloss:
+    best_vloss = avg_vloss
+    model_path = 'model_{}_{}'.format(timestamp, epoch_number)
+    torch.save(model.state_dict(), model_path)
+```
+10. Все рекомендации реалиизованы в сквозном примере в ноутбуке 04_Baseline_model.ipynb.
+
+
+
+## 4. Сквозной пример реализации рекомендаций к коду ноутбука challenge notebook.ipynb
+
+В ноутбуке 04_Baseline_model.ipynb реализован на сквозном примере обучения модели реализованы основные рекомендации к коду ноутбука challenge notebook.ipynb.
+
+1. Далее необходимо обучить модель при различных гиперпараметрах и выбрать лучшие по валидационной выборке.
+2. После настройки гиперпараметров следует протестировать модель на тестовой выборке и изучить, на каких экземплярах модель ошибается. Это может дать представление, как нужно трансформировать данные или изменить архитектуру модели, чтобы улучшить метрики.
+3. Еще одно направление для исследований - проанализироать насколько качественная разметка. От разметки зависит и качесвтво обучения, и метрики на тестовой выборке. Если в разметке обнаружатся какие-то системные ошибки, которые можно нивелироать, есть шанс, что метрики модели улучшатся. Другой вариант - делать поправку на качество разметки - помечать в данных способы разметки/ разметчиков, как дополнительный признак.
+4. Формулы, задейстованные в подготовке данных, обучении модели, инфененсе должны быть покрыты тестами. Так будет удобнее поддерживать модель на протяжении ее жизненного цикла. Обычно для этих целей используют библиотеки ```pytest``` - [здесь](https://docs.pytest.org/en/stable/) ссылка , ```unittest.mock``` - [здесь](https://docs.python.org/3/library/unittest.mock.html) ссылка. 

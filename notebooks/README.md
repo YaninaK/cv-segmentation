@@ -188,8 +188,8 @@ transform = apply_numpy_transform
 
 
 
-## 3. Блоки UNET Model, Attention U-Net, ResUNet, Various Losses for Training, Evalution Score.
-Рекомендации реализованы в коде ноутбука 03_Models_losses_&_evalution score.ipynb.
+## 3. Блоки UNET Model, Attention U-Net, ResUNet, Various Losses for Training, Evalution Score, Training
+Рекомендации из ноутбука 03_Models_losses_&_evalution score.ipynb.
 
 1. Все три модели ```UNET Model```, ```Attention U-Net``` и ```ResUNet``` могут быть задействованы в сегментации изображений, но в базовом варианте задействована только ```UNET Model```, поэтому остальные модели лучше показывать в отдельном ноутбуке в качестве заметок для дальнейшей работы.
 
@@ -211,3 +211,37 @@ transform = apply_numpy_transform
     * DeiT (data-efficient image transformers)
     * VGG16-U-Net
   
+5. Инициализацию модели лучше сделать в отдельной ячейке, чтобы можно было легко добавлять больше эпох к текущему запуску.
+
+6. Для логирования метрик и значений функции потерь при обучении модели и валидации, чтобы потом выводить результаты на ```TensorBoard```, в pytorch предлагается ```torch.utils.tensorboard.SummaryWriter```.
+  TensorBoard: набор инструментов для визуализации TensorFlow - [здесь](https://www.tensorflow.org/tensorboard?hl=ru) ссылка.
+
+  Код запускается при инициализации модели:
+```
+timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+writer = SummaryWriter('runs/corrosion_segmentation_trainer_{}'.format(timestamp))
+```
+  В конце каждой эпохи логируем показатели обучения и валидации модели:
+```
+writer.add_scalars(
+  'Training vs. Validation Loss',
+  { 'Training' : avg_loss, 'Validation' : avg_vloss },
+  epoch_number + 1
+)
+writer.flush()
+```
+  Пример кода для запуска ```TensorBoard``` в ```Google Colab```:
+```
+%load_ext tensorboard
+%tensorboard --logdir='/content/cv-segmentation/notebooks/runs'
+```
+
+7. Имеет смысл отслеживать и записывать лучшие версии модели:
+```
+best_vloss = 1_000_000.
+if avg_vloss < best_vloss:
+    best_vloss = avg_vloss
+    model_path = 'model_{}_{}'.format(timestamp, epoch_number)
+    torch.save(model.state_dict(), model_path)
+```
+8. Все рекомендации реалиизованы в сквозном примере в ноутбуке 04_Baseline_model.ipynb.

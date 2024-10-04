@@ -10,8 +10,8 @@ CONFIG = {
     "val": [3, 9],
     "test": [2, 4, 5, 15],
     "batch_size": {
-        "train": 4,
-        "val": 4,
+        "train": 16,
+        "val": 16,
         "test": 4,
     },
     "num_workers": {

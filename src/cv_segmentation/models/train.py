@@ -47,9 +47,9 @@ def data_preparation_pipeline(
     dataset_loader = {
         stage: torch.utils.data.DataLoader(
             segmentation_datasets[stage],
-            batch_size=4,
+            batch_size=config["batch_size"][stage],
             shuffle=np.where(stage == "train", True, False),
-            num_workers=4,
+            num_workers=config["num_workers"][stage],
         )
         for stage in stages
     }

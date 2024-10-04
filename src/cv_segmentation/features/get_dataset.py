@@ -53,19 +53,18 @@ class SegmentationDataset(Dataset):
         if torch.is_tensor(idx):
             idx = idx.tolist()
 
-        img_name = os.path.join(self.root_dir, f"{self.mask_frame.iloc[idx, 0]}.npy")
-        image = np.load(img_name)
+        img_name = self.mask_frame.iloc[idx, 0]
+        image = np.load(os.path.join(self.root_dir, f"{img_name}.npy"))
         image = np.nan_to_num(image, nan=np.quantile(np.nan_to_num(image), 0.5))
         image = np.where(
             image < self.config["outlier_threshold"], np.quantile(image, 0.5), image
         )
-        image = torch.from_numpy(image)
-        mask = self.mask_frame.iloc[idx, 1:]
-        mask = torch.from_numpy(np.array(mask, dtype=float).reshape(36, 36))
-
-        sample = {"image": image, "mask": mask}
+        mask = np.array(self.mask_frame.iloc[idx, 1:], dtype=float).reshape(36, 36)
 
         if self.transform:
-            sample = self.transform(sample)
+            image, mask = self.transform(image, mask)
 
-        return sample
+        image = torch.from_numpy(image.copy())
+        mask = torch.from_numpy(mask.copy())
+
+        return image, mask, img_name

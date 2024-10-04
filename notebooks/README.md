@@ -199,21 +199,23 @@ transform = apply_numpy_transform
 
   * Если эксперименты проводились c ```Dice Loss + BCE``` и ```Focal Loss```, эти функции потерь лучше вывести в отдельные модули, которые бы импортировались в ноутбук, а в ноутбуке провести сравнительный анализ результатов экспериментов.
 
-3. Dice Score (```dice_coeff```) рассчитывается некорректно. Корректный вариант расчета - в коде ноутбука. Формула работает для тензоров pytorch.
-
-  * Dice в pytorch доступен "из коробки" - [здесь](https://torchmetrics.readthedocs.io/en/v0.10.0/classification/dice.html) ссылка. Лучше использовать этот вариант.
-
-4. В дальнейшем можно поэксперементировать с перспективными архитектурами моделей:
+3. В дальнейшем можно поэксперементировать с перспективными архитектурами моделей:
     * UNet++: A Nested U-Net Architecture for Medical Image Segmentation Zongwei Zhou et al., [Jul 2018](https://arxiv.org/abs/1807.10165)
     * AG-CUResNeSt: A Novel Method for Colon Polyp Segmentation. Sang et al. [Mar 2022](https://arxiv.org/abs/2105.00402)
     * Mask R-CNN. Kaiming He et al. [Jan 2018](https://arxiv.org/abs/1703.06870)
     * Vision Transformer (ViT) An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale Alexey Dosovitskiy et al.[Jun 2021](https://arxiv.org/abs/2010.11929)
     * DeiT (data-efficient image transformers)
     * VGG16-U-Net
-  
-5. Инициализацию модели лучше сделать в отдельной ячейке, чтобы можно было легко добавлять больше эпох к текущему запуску.
 
-6. Для логирования метрик и значений функции потерь при обучении модели и валидации, чтобы потом выводить результаты на ```TensorBoard```, в pytorch предлагается ```torch.utils.tensorboard.SummaryWriter```.
+4. Dice Score (```dice_coeff```) рассчитывается некорректно. Корректный вариант расчета выше в этом ноутбуке. Формула работает для тензоров pytorch.
+
+5. Из-за того что функция ```dice_coeff``` на входе и выходе не работает с ```torch.tensor```, ```y_pred``` и ```y_true``` приходится переводить в ```numpy``` и переходить на ```cpu```, что замедляет скорость обучения модели. Формула ```dice``` (выше), работающая с ```torch.tensor```, позволит этого избежать.
+
+6. Если исходить из логики, что основная задача - обучение модели, а валидация - вспомогательная, вместо отдельной формулы для валидации модели, я бы предложила сделать отдельную формулу для одной эпохи обучения (```training Loop```) и использовать этот законченный блок при запуске каждой эпохи. 
+  
+7. Инициализацию модели лучше сделать в отдельной ячейке, чтобы можно было легко добавлять больше эпох к текущему запуску.
+
+8. Для логирования метрик и значений функции потерь при обучении модели и валидации, чтобы потом выводить результаты на ```TensorBoard```, в pytorch предлагается ```torch.utils.tensorboard.SummaryWriter```.
   TensorBoard: набор инструментов для визуализации TensorFlow - [здесь](https://www.tensorflow.org/tensorboard?hl=ru) ссылка.
 
   Код запускается при инициализации модели:
@@ -236,7 +238,7 @@ writer.flush()
 %tensorboard --logdir='/content/cv-segmentation/notebooks/runs'
 ```
 
-7. Имеет смысл отслеживать и записывать лучшие версии модели:
+9. Имеет смысл отслеживать и записывать лучшие версии модели:
 ```
 best_vloss = 1_000_000.
 if avg_vloss < best_vloss:
@@ -244,4 +246,4 @@ if avg_vloss < best_vloss:
     model_path = 'model_{}_{}'.format(timestamp, epoch_number)
     torch.save(model.state_dict(), model_path)
 ```
-8. Все рекомендации реалиизованы в сквозном примере в ноутбуке 04_Baseline_model.ipynb.
+10. Все рекомендации реалиизованы в сквозном примере в ноутбуке 04_Baseline_model.ipynb.

@@ -10,7 +10,7 @@
 
 ## 1. Блок Look at the data (EDA), Label Refinement, Image Enhancement
 
-Рекомендации реализованы в коде ноутбука 01_EDA.ipynb.
+Рекомендации реализованы в коде ноутбука 01_EDA.ipynb - [здесь](https://github.com/YaninaK/cv-segmentation/blob/main/notebooks/01_EDA.ipynb) ссылка.
 
 1. Блок Look at the data (EDA), Label Refinement & Image Enhancement лучше делать в отдельном ноутбуке и давать на него ссылку. 
 2. Для воспроизводимости среды необходимые версии библиотек лучше зафиксировать, например, в файле requirements.txt:
@@ -131,7 +131,7 @@ test = [2, 4, 5, 15]
 
 ## 2. Блоки Preparing The Dataset, Dataset Class и Start Training.
 
-Рекомендации реализованы в коде ноутбука 02_Datasets,_dataloaders_transforms.ipynb.
+Рекомендации реализованы в коде ноутбука 02_Datasets,_dataloaders_transforms.ipynb - [здесь](https://github.com/YaninaK/cv-segmentation/blob/main/notebooks/02_Datasets%2C_dataloaders_transforms.ipynb) ссылка.
 
 1. До генерации датасета имеет смысл очистить данные от выбросов. Препроцессинг данных лучше сделать в виде отдельного модуля:
 
@@ -188,7 +188,7 @@ transform = apply_numpy_transform
 
 
 ## 3. Блоки UNET Model, Attention U-Net, ResUNet, Various Losses for Training, Evalution Score, Training
-Рекомендации из ноутбука 03_Models_losses_&_evalution score.ipynb.
+Рекомендации из ноутбука 03_Models_losses_&_evalution score.ipynb - [здесь](https://github.com/YaninaK/cv-segmentation/blob/main/notebooks/03_Models_losses_%26_evalution_score.ipynb) ссылка.
 
 1. Все три модели ```UNET Model```, ```Attention U-Net``` и ```ResUNet``` могут быть задействованы в сегментации изображений, но в базовом варианте задействована только ```UNET Model```, поэтому остальные модели лучше показывать в отдельном ноутбуке в качестве заметок для дальнейшей работы.
 

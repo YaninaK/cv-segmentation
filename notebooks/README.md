@@ -2,7 +2,7 @@
 
 1. На этапе EDA (блок Look at the data) выявлены выбросы в одномерном пространстве.
 2. Корректно выбрана библиотека для построения модели - ```pytorch```
-3. Применена аугментация данных, ```scipy.ndimage.binary_fill_holes```
+3. Применена аугментация данных, включая ```scipy.ndimage.binary_fill_holes```
 4. Применены ```torch.utils.data.Dataset``` и ```torch.utils.data.DataLoader``` 
 5. Все три отобранные модели UNet, Attention U-Net, ResUNet подходят лля сегментации изображений.
 6. Модель UNet обучена и получен результат.
